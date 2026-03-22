@@ -3,348 +3,710 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Background Personnage</title>
+  <title>Background Personnage | Futur Policier</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --card: #1f2937;
-      --text: #f3f4f6;
-      --muted: #9ca3af;
-      --accent: #38bdf8;
-      --accent-2: #22c55e;
+      --bg: #07111f;
+      --bg2: #0b1730;
+      --panel: rgba(11, 23, 48, 0.76);
+      --card: rgba(17, 30, 58, 0.85);
+      --text: #edf4ff;
+      --muted: #9fb3d9;
+      --blue: #4db4ff;
+      --cyan: #65f0ff;
+      --gold: #ffcc66;
+      --red: #ff6f7a;
       --border: rgba(255,255,255,0.08);
+      --glow: 0 0 22px rgba(77,180,255,0.30);
+      --glow-strong: 0 0 35px rgba(101,240,255,0.25);
     }
 
     * { box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      font-family: Inter, Arial, Helvetica, sans-serif;
       color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(77,180,255,0.18), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(255,111,122,0.12), transparent 20%),
+        linear-gradient(180deg, #040912 0%, var(--bg) 40%, var(--bg2) 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.25;
+      animation: drift 10s ease-in-out infinite alternate;
+    }
+
+    .orb.one {
+      width: 260px;
+      height: 260px;
+      background: var(--blue);
+      top: 6%;
+      left: -4%;
+    }
+
+    .orb.two {
+      width: 220px;
+      height: 220px;
+      background: var(--cyan);
+      top: 45%;
+      right: -6%;
+      animation-duration: 14s;
+    }
+
+    .orb.three {
+      width: 180px;
+      height: 180px;
+      background: var(--red);
+      bottom: 8%;
+      left: 25%;
+      animation-duration: 16s;
+    }
+
+    @keyframes drift {
+      from { transform: translateY(0) translateX(0) scale(1); }
+      to { transform: translateY(25px) translateX(20px) scale(1.08); }
     }
 
     .container {
-      max-width: 1200px;
+      position: relative;
+      z-index: 1;
+      max-width: 1250px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 28px;
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 20px;
-      align-items: stretch;
-      margin-bottom: 20px;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 22px;
+      margin-bottom: 22px;
     }
 
     .card {
-      background: rgba(17,24,39,0.9);
+      background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.30), var(--glow);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent 30%, transparent 70%, rgba(101,240,255,0.05));
+      pointer-events: none;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(77,180,255,0.12);
+      border: 1px solid rgba(77,180,255,0.28);
+      color: var(--cyan);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      box-shadow: var(--glow);
     }
 
     h1, h2, h3, p { margin-top: 0; }
 
-    .tag {
-      display: inline-block;
-      padding: 6px 10px;
-      background: rgba(56,189,248,0.12);
-      color: var(--accent);
-      border: 1px solid rgba(56,189,248,0.25);
-      border-radius: 999px;
-      font-size: 12px;
-      margin-bottom: 12px;
+    .name {
+      font-size: clamp(38px, 6vw, 62px);
+      line-height: 0.95;
+      margin: 0 0 14px;
+      letter-spacing: -0.03em;
     }
 
-    .name {
-      font-size: 42px;
-      font-weight: 700;
-      line-height: 1.05;
-      margin-bottom: 10px;
+    .accent {
+      color: var(--cyan);
+      text-shadow: 0 0 20px rgba(101,240,255,0.35);
     }
 
     .subtitle {
-      color: var(--muted);
       font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    .quick-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .stat-box {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .stat-label {
       color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 5px;
+      line-height: 1.75;
+      max-width: 90%;
+      margin-bottom: 20px;
     }
 
-    .stat-value {
+    .quick-stats,
+    .grid-2,
+    .grid-4 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .quick-stats { grid-template-columns: repeat(2, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .mini-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .value {
       font-size: 18px;
       font-weight: 700;
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 20px;
-    }
-
     .section-title {
-      font-size: 22px;
+      font-size: 24px;
       margin-bottom: 14px;
     }
 
-    .map-box {
-      background: #0b1220;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px;
+    .hero-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .quote {
+      padding: 16px;
+      border-left: 3px solid var(--gold);
+      background: rgba(255,204,102,0.08);
+      border-radius: 14px;
+      color: #ffe7b0;
+      line-height: 1.7;
+      box-shadow: 0 0 20px rgba(255,204,102,0.08);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .map-wrap {
+      position: relative;
+      border-radius: 22px;
       overflow: hidden;
+      border: 1px solid var(--border);
+      background: #091322;
+      min-height: 440px;
+      box-shadow: var(--glow-strong);
     }
 
-    .map-box img {
+    .map-wrap img {
       width: 100%;
-      height: auto;
-      border-radius: 12px;
+      height: 100%;
+      object-fit: cover;
       display: block;
+      filter: brightness(0.72) saturate(1.15);
+      transform: scale(1.02);
     }
 
-    .map-note {
+    .map-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(3,8,18,0.12), rgba(3,8,18,0.55));
+    }
+
+    .zone {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--cyan);
+      border: 2px solid rgba(255,255,255,0.85);
+      box-shadow: 0 0 18px rgba(101,240,255,0.7);
+      animation: pulse 2.4s infinite;
+    }
+
+    .zone::after {
+      content: attr(data-name);
+      position: absolute;
+      top: -36px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      padding: 6px 10px;
+      font-size: 11px;
+      border-radius: 999px;
+      background: rgba(5, 14, 28, 0.92);
+      border: 1px solid rgba(101,240,255,0.3);
+      color: var(--text);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(101,240,255,0.6); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 16px rgba(101,240,255,0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(101,240,255,0); }
+    }
+
+    .map-legend {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .legend-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
       color: var(--muted);
-      font-size: 13px;
-      margin-top: 10px;
+      font-size: 14px;
       line-height: 1.5;
     }
 
-    .progress-list {
+    .stat-list {
       display: grid;
-      gap: 12px;
+      gap: 14px;
     }
 
-    .progress-item {
-      background: rgba(255,255,255,0.03);
+    .stat-item {
+      padding: 14px;
+      border-radius: 16px;
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
+      background: rgba(255,255,255,0.035);
     }
 
-    .progress-header {
+    .stat-head {
       display: flex;
       justify-content: space-between;
       gap: 10px;
+      margin-bottom: 10px;
       font-size: 14px;
-      margin-bottom: 8px;
     }
 
     .bar {
       width: 100%;
-      height: 10px;
-      background: rgba(255,255,255,0.08);
+      height: 12px;
       border-radius: 999px;
       overflow: hidden;
+      background: rgba(255,255,255,0.08);
+      position: relative;
     }
 
     .fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      border-radius: 999px;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--gold));
+      box-shadow: 0 0 18px rgba(101,240,255,0.35);
+      transition: width 1.6s cubic-bezier(.2,.8,.2,1);
     }
 
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+    .story p,
+    li {
+      color: #dce7fb;
+      line-height: 1.8;
     }
 
     ul {
+      margin: 0;
       padding-left: 18px;
-      color: #e5e7eb;
-      line-height: 1.7;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 16px 16px 16px 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 14px;
+      bottom: 14px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--cyan), var(--gold));
+      box-shadow: var(--glow);
+    }
+
+    .objective-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .objective-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      box-shadow: var(--glow);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #061019;
+      background: var(--gold);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .footer {
-      margin-top: 22px;
       text-align: center;
       color: var(--muted);
       font-size: 13px;
+      margin-top: 22px;
+      padding-bottom: 20px;
     }
 
-    @media (max-width: 900px) {
-      .hero, .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .name {
-        font-size: 34px;
-      }
-
-      .info-grid,
+    @media (max-width: 980px) {
+      .hero,
+      .layout,
+      .objective-grid,
+      .grid-4,
+      .grid-2,
       .quick-stats {
         grid-template-columns: 1fr;
+      }
+
+      .subtitle {
+        max-width: 100%;
+      }
+
+      .map-wrap {
+        min-height: 320px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="ambient">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+  </div>
+
+  <main class="container">
     <section class="hero">
-      <div class="card">
-        <div class="tag">Fiche personnage RP</div>
-        <div class="name">TICO "NOME" DA GROTA</div>
+      <article class="card reveal">
+        <div class="tag">Dossier personnage • futur officier</div>
+        <h1 class="name">MATEO <span class="accent">“AZUL”</span> VELÁSQUEZ</h1>
         <p class="subtitle">
-          Né dans une favela de Los Santos, Tico a grandi entre loyauté, débrouille et pression constante.
-          Il ne cherche pas juste à survivre: il veut laisser une trace, faire respecter son nom, et construire quelque chose de solide autour des siens.
+          Latino né à Los Santos, Mateo a grandi dans un quartier où tout le monde apprend très tôt à se méfier.
+          Là où d’autres ont choisi la rue, lui a gardé une obsession plus silencieuse : comprendre le système,
+          entrer dedans, puis devenir le genre de policier que personne n’a eu quand il était gosse.
         </p>
 
         <div class="quick-stats">
-          <div class="stat-box">
-            <div class="stat-label">Âge</div>
-            <div class="stat-value">16 ans</div>
+          <div class="mini-card">
+            <div class="label">Âge</div>
+            <div class="value">19 ans</div>
           </div>
-          <div class="stat-box">
-            <div class="stat-label">Origine</div>
-            <div class="stat-value">Brésilien</div>
+          <div class="mini-card">
+            <div class="label">Origine</div>
+            <div class="value">Latino</div>
           </div>
-          <div class="stat-box">
-            <div class="stat-label">Quartier</div>
-            <div class="stat-value">Tropa da Grota</div>
+          <div class="mini-card">
+            <div class="label">Objectif final</div>
+            <div class="value">Rejoindre la police</div>
           </div>
-          <div class="stat-box">
-            <div class="stat-label">Mentalité</div>
-            <div class="stat-value">Calme / rusé / ambitieux</div>
+          <div class="mini-card">
+            <div class="label">Réputation</div>
+            <div class="value">Calme, net, observateur</div>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="card">
-        <h2 class="section-title">Stats du personnage</h2>
-        <div class="progress-list">
-          <div class="progress-item">
-            <div class="progress-header"><span>Charisme</span><span>82%</span></div>
-            <div class="bar"><div class="fill" style="width:82%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-header"><span>Intelligence de rue</span><span>91%</span></div>
-            <div class="bar"><div class="fill" style="width:91%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-header"><span>Sang-froid</span><span>77%</span></div>
-            <div class="bar"><div class="fill" style="width:77%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-header"><span>Loyauté</span><span>95%</span></div>
-            <div class="bar"><div class="fill" style="width:95%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-header"><span>Patience</span><span>63%</span></div>
-            <div class="bar"><div class="fill" style="width:63%"></div></div>
+      <aside class="card hero-panel reveal">
+        <div>
+          <h2 class="section-title">Profil rapide</h2>
+          <div class="grid-2">
+            <div class="mini-card">
+              <div class="label">Qualité dominante</div>
+              <div class="value">Discipline</div>
+            </div>
+            <div class="mini-card">
+              <div class="label">Défaut</div>
+              <div class="value">Trop intérieur</div>
+            </div>
+            <div class="mini-card">
+              <div class="label">Point fort</div>
+              <div class="value">Lecture des gens</div>
+            </div>
+            <div class="mini-card">
+              <div class="label">Point faible</div>
+              <div class="value">Supporte mal l’injustice</div>
+            </div>
           </div>
         </div>
-      </div>
+
+        <div class="quote">
+          « J’ai grandi en voyant les gyrophares arriver trop tard. Un jour, c’est moi qui serai dans la voiture. »
+        </div>
+      </aside>
     </section>
 
     <section class="layout">
-      <div class="card">
-        <h2 class="section-title">Carte / territoire</h2>
-        <div class="map-box">
-          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80" alt="Zone du personnage" />
-          <div class="map-note">
-            Remplace cette image par une vraie carte de ton quartier, une capture de GTA, ou une map annotée.
-            Tu peux aussi ajouter des points clés : bloc, foyer, terrain, planques, zones ennemies.
+      <article class="card reveal">
+        <h2 class="section-title">Carte de Los Santos • points clés</h2>
+        <div class="map-wrap">
+          <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1400&q=80" alt="Carte stylisée de ville" />
+          <div class="map-overlay"></div>
+          <div class="zone" data-name="Quartier d’origine" style="top: 62%; left: 28%;"></div>
+          <div class="zone" data-name="Terrain d’entraînement" style="top: 46%; left: 58%; animation-delay: .5s;"></div>
+          <div class="zone" data-name="But final : académie" style="top: 24%; left: 70%; animation-delay: 1s;"></div>
+        </div>
+        <div class="map-legend">
+          <div class="legend-item"><strong>Quartier d’origine :</strong> là où Mateo a appris à observer, courir, se taire et retenir les visages.</div>
+          <div class="legend-item"><strong>Terrain d’entraînement :</strong> basket, running, cardio, pompes, travail mental quand tout dort.</div>
+          <div class="legend-item"><strong>Académie :</strong> symbole de son futur, de la sortie par le mérite et la rigueur.</div>
+          <div class="legend-item"><strong>Ville :</strong> pour lui Los Santos n’est pas juste un décor, c’est un dossier vivant qu’il veut comprendre.</div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <h2 class="section-title">Stats dynamiques</h2>
+        <div class="stat-list">
+          <div class="stat-item">
+            <div class="stat-head"><span>Discipline</span><strong class="counter" data-target="94">0%</strong></div>
+            <div class="bar"><div class="fill" data-width="94%"></div></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-head"><span>Sang-froid</span><strong class="counter" data-target="88">0%</strong></div>
+            <div class="bar"><div class="fill" data-width="88%"></div></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-head"><span>Lecture du terrain</span><strong class="counter" data-target="91">0%</strong></div>
+            <div class="bar"><div class="fill" data-width="91%"></div></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-head"><span>Condition physique</span><strong class="counter" data-target="84">0%</strong></div>
+            <div class="bar"><div class="fill" data-width="84%"></div></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-head"><span>Charisme naturel</span><strong class="counter" data-target="72">0%</strong></div>
+            <div class="bar"><div class="fill" data-width="72%"></div></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-head"><span>Résistance mentale</span><strong class="counter" data-target="90">0%</strong></div>
+            <div class="bar"><div class="fill" data-width="90%"></div></div>
           </div>
         </div>
-      </div>
+      </article>
+    </section>
 
-      <div class="card">
-        <h2 class="section-title">Background</h2>
+    <section class="layout">
+      <article class="card story reveal">
+        <h2 class="section-title">Background original</h2>
         <p>
-          Tico a grandi dans une zone où tout se gagne difficilement. Très jeune, il a compris que parler trop fort
-          attirait les problèmes, alors il a appris à observer. Il connaît les habitudes du quartier, les visages,
-          les tensions, les regards, les raccourcis, les moments où la rue devient calme et ceux où elle explose.
+          Mateo Velásquez a grandi entre deux mondes. À la maison, sa mère lui répétait qu’un nom propre vaut plus qu’un billet sale.
+          Dehors, il voyait l’inverse tous les jours. Des gens rapides, violents, respectés par peur. Très tôt, il a compris que la rue crée
+          des réflexes, mais qu’elle avale aussi ceux qui n’ont pas de plan.
         </p>
         <p>
-          Il est du genre à se faire respecter sans forcer. Il aime l'image, le style, la musique, la fierté du quartier,
-          mais derrière ça il a une vraie idée en tête : monter proprement, réunir les bonnes personnes, et ne pas finir
-          comme ceux qui ont tout gâché pour aller trop vite.
+          Quand il était plus jeune, Mateo passait des heures à observer depuis les escaliers d’immeuble : les habitudes des voisins,
+          les voitures qui tournaient trop souvent, les disputes qui annonçaient un problème, les sirènes qui coupaient la nuit.
+          Il n’aimait pas l’uniforme pour l’autorité. Il l’aimait pour ce qu’il représentait dans sa tête : présence, contrôle, décision.
         </p>
+        <p>
+          Un soir, après avoir vu un innocent se faire emporter par une histoire qui n’était même pas la sienne, Mateo a arrêté de rêver flou.
+          Il s’est mis à courir tous les matins, à mieux parler, à mieux se tenir, à noter ce qu’il devait corriger chez lui. Pas pour jouer au héros,
+          mais pour devenir solide. Son ambition n’est pas d’être aimé. Son ambition, c’est d’être respecté sans jamais se vendre.
+        </p>
+      </article>
 
-        <div class="info-grid">
-          <div>
-            <h3>Traits</h3>
-            <ul>
-              <li>Observe beaucoup avant d'agir</li>
-              <li>Très attaché à son quartier</li>
-              <li>Parle peu mais marque les esprits</li>
-              <li>Sensible au respect et à l'humiliation</li>
-            </ul>
+      <article class="card reveal">
+        <h2 class="section-title">Éléments marquants</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h3>Enfant de quartier, mémoire visuelle rare</h3>
+            <p>Mateo retient les plaques, les visages, les silhouettes et les détails que les autres oublient.</p>
           </div>
-          <div>
-            <h3>Passions</h3>
-            <ul>
-              <li>Rap brésilien / funk / trap</li>
-              <li>Tenues, bijoux, identité visuelle</li>
-              <li>Foot de rue et entraînement</li>
-              <li>Repérer les opportunités du hood</li>
-            </ul>
+          <div class="timeline-item">
+            <h3>Physique construit dans la régularité</h3>
+            <p>Footing, escaliers, street workout et discipline personnelle ont remplacé le chaos autour de lui.</p>
           </div>
+          <div class="timeline-item">
+            <h3>Mentalité de futur enquêteur</h3>
+            <p>Il pose peu de questions inutiles. Il regarde, il recoupe, puis il parle seulement quand c’est utile.</p>
+          </div>
+          <div class="timeline-item">
+            <h3>Double image</h3>
+            <p>Dans son quartier, certains le trouvent trop droit. Ailleurs, on le trouve trop dur. Lui avance entre les deux.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card reveal">
+      <h2 class="section-title">Traits, habitudes et vibe</h2>
+      <div class="grid-4">
+        <div class="mini-card">
+          <div class="label">Style</div>
+          <div class="value">Sobre, propre, bleu nuit</div>
+        </div>
+        <div class="mini-card">
+          <div class="label">Musique</div>
+          <div class="value">Latin trap, rap mélodique, vieux classiques</div>
+        </div>
+        <div class="mini-card">
+          <div class="label">Routine</div>
+          <div class="value">Course tôt, entraînement, lecture du terrain</div>
+        </div>
+        <div class="mini-card">
+          <div class="label">Code perso</div>
+          <div class="value">Ne jamais humilier un faible</div>
         </div>
       </div>
     </section>
 
-    <section class="card" style="margin-top: 20px;">
-      <h2 class="section-title">Objectifs</h2>
-      <div class="info-grid">
-        <div>
-          <h3>Court terme</h3>
+    <section class="card reveal" style="margin-top: 22px;">
+      <h2 class="section-title">Objectifs du personnage</h2>
+      <div class="objective-grid">
+        <div class="objective-card">
+          <div class="badge">Court terme</div>
           <ul>
-            <li>Se faire connaître dans le quartier</li>
-            <li>Créer un cercle fiable autour de lui</li>
-            <li>Avoir une image forte et reconnaissable</li>
+            <li>Construire une réputation sérieuse et propre</li>
+            <li>Améliorer encore son physique et sa discipline</li>
+            <li>Se faire repérer comme quelqu’un de fiable</li>
           </ul>
         </div>
-        <div>
-          <h3>Moyen terme</h3>
+        <div class="objective-card">
+          <div class="badge">Moyen terme</div>
           <ul>
-            <li>Développer une vraie influence locale</li>
-            <li>Faire respecter le nom de son groupe</li>
-            <li>Construire des alliances utiles</li>
+            <li>Entrer dans un cadre légal exigeant</li>
+            <li>Couper définitivement avec les mauvais réflexes du quartier</li>
+            <li>Développer une vraie présence d’autorité</li>
           </ul>
         </div>
-        <div>
-          <h3>Long terme</h3>
+        <div class="objective-card">
+          <div class="badge">Long terme</div>
           <ul>
-            <li>Devenir une figure du quartier</li>
-            <li>Laisser une réputation propre à son nom</li>
-            <li>Créer quelque chose qui dépasse sa personne</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Phrase signature</h3>
-          <ul>
-            <li>"On me voit peu, mais on oublie pas mon passage."</li>
+            <li>Rejoindre la police de Los Santos</li>
+            <li>Devenir un officier respecté pour son calme et sa lecture du terrain</li>
+            <li>Prouver qu’on peut venir du bas sans trahir ce qu’on est</li>
           </ul>
         </div>
       </div>
     </section>
 
     <div class="footer">
-      Site simple prêt pour GitHub Pages — modifie les textes, l'image et les stats selon ton perso.
+      Site personnage premium • design sombre • glow • animation • stats dynamiques • concept original futur policier
     </div>
-  </div>
+  </main>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+
+    const statSection = document.querySelector('.stat-list');
+    let animated = false;
+
+    function animateCounters() {
+      if (animated) return;
+      animated = true;
+
+      document.querySelectorAll('.fill').forEach(fill => {
+        fill.style.width = fill.dataset.width;
+      });
+
+      document.querySelectorAll('.counter').forEach(counter => {
+        const target = +counter.dataset.target;
+        let current = 0;
+        const step = Math.max(1, Math.ceil(target / 45));
+
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          counter.textContent = current + '%';
+        }, 28);
+      });
+    }
+
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+        }
+      });
+    }, { threshold: 0.35 });
+
+    statObserver.observe(statSection);
+  </script>
 </body>
 </html>
+
