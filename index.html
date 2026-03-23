@@ -957,7 +957,60 @@
     const notifyBtn = document.getElementById('notifyBtn');
     const consoleLines = document.getElementById('consoleLines');
 
-    function pushNoti
+    function pushNotif(title, text) {
+      const el = document.createElement('div');
+      el.className = 'notif';
+      el.innerHTML = '<div class="notif-title">' + title + '</div><div class="notif-text">' + text + '</div>';
+      notifStack.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('show'));
+      setTimeout(() => {
+        el.classList.remove('show');
+        setTimeout(() => el.remove(), 350);
+      }, 3400);
+    }
+
+    notifyBtn.addEventListener('click', () => {
+      const samples = [
+        ['Profile Updated', 'Nouvelle entrée ajoutée au dossier de Mateo.'],
+        ['Geo Alert', 'Point sensible détecté sur la carte interactive.'],
+        ['Behavior Check', 'Discipline élevée confirmée.'],
+        ['System Notice', 'Conflit intérieur toujours actif : justice > rue.']
+      ];
+      const pick = samples[Math.floor(Math.random() * samples.length)];
+      pushNotif(pick[0], pick[1]);
+    });
+
+    setTimeout(() => pushNotif('System Online', 'Interface police chargée avec succès.'), 1800);
+    setTimeout(() => pushNotif('New Entry Added', 'Le dossier est maintenant actif et consultable.'), 3200);
+
+    const liveFeed = [
+      '[INFO] visual memory score verified...',
+      '[TRACE] local area pattern saved...',
+      '[NOTE] candidate remains highly self-controlled...',
+      '[ALERT] external pressure monitored...',
+      '[STATUS] progression toward law enforcement maintained...'
+    ];
+
+    let liveIndex = 0;
+    setInterval(() => {
+      const line = liveFeed[liveIndex % liveFeed.length];
+      consoleLines.textContent += '
+' + line;
+      const parts = consoleLines.textContent.split('
+');
+      if (parts.length > 8) consoleLines.textContent = parts.slice(parts.length - 8).join('
+');
+      liveIndex++;
+    }, 2400);
+
+    document.querySelectorAll('.sys-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.sys-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        const target = document.querySelector(item.dataset.jump);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
     const musicBtn = document.getElementById('musicBtn');
     let musicOn = false;
     music.volume = 0.35;
