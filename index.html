@@ -853,7 +853,7 @@
         </div>
       </div>
       <div class="music-note">
-        <strong>Musique :</strong> le site est prêt avec un bouton audio. Pour utiliser <em>La Rvfleuze - Argent Sale</em>, ajoute simplement un fichier nommé <strong>argent-sale.mp3</strong> dans ton repo GitHub, au même niveau que <strong>index.html</strong>.
+        <strong>Musique :</strong> le bouton audio fonctionne avec un vrai fichier <strong>.mp3</strong> nommé <strong>argent-sale.mp3</strong>, placé au même niveau que <strong>index.html</strong> dans ton repo GitHub.
       </div>
     </section>
 
@@ -994,12 +994,11 @@
     let liveIndex = 0;
     setInterval(() => {
       const line = liveFeed[liveIndex % liveFeed.length];
-      consoleLines.textContent += '
-' + line;
-      const parts = consoleLines.textContent.split('
-');
-      if (parts.length > 8) consoleLines.textContent = parts.slice(parts.length - 8).join('
-');
+      consoleLines.textContent += '\n' + line;
+      const parts = consoleLines.textContent.split('\n');
+      if (parts.length > 8) {
+        consoleLines.textContent = parts.slice(parts.length - 8).join('\n');
+      }
       liveIndex++;
     }, 2400);
 
@@ -1035,3 +1034,4 @@
   </script>
 </body>
 </html>
+
