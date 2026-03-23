@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dossier Police | Mateo Velásquez</title>
+  <title>Dossier Police | Mateo Azul Velásquez</title>
   <style>
     :root {
       --bg: #030711;
@@ -514,6 +514,137 @@
     .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
+    .system-shell {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar {
+      background: rgba(5, 11, 22, .78);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 86px;
+      height: fit-content;
+    }
+
+    .sys-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--cyan);
+      margin-bottom: 14px;
+    }
+
+    .sys-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .sys-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .sys-item:hover, .sys-item.active {
+      color: var(--text);
+      border-color: rgba(114,243,255,.32);
+      box-shadow: var(--glow-blue);
+      transform: translateX(2px);
+    }
+
+    .dashboard {
+      display: grid;
+      gap: 20px;
+    }
+
+    .console {
+      background: rgba(4, 9, 18, .85);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .console-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--cyan);
+    }
+
+    .console-lines {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 13px;
+      line-height: 1.9;
+      color: #dffaff;
+      min-height: 120px;
+      white-space: pre-line;
+    }
+
+    .notif-stack {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 40;
+      display: grid;
+      gap: 10px;
+      width: min(360px, calc(100vw - 32px));
+    }
+
+    .notif {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(6, 13, 25, .94);
+      border: 1px solid rgba(114,243,255,.22);
+      box-shadow: var(--shadow), var(--glow-blue);
+      transform: translateX(120%);
+      opacity: 0;
+      transition: .35s ease;
+    }
+
+    .notif.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .notif-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+
+    .notif-text {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 980px) {
+      .system-shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+
     .footer {
       text-align: center;
       color: var(--muted);
@@ -530,6 +661,7 @@
   </style>
 </head>
 <body>
+  <!-- langage RP plus street -->
   <div class="lights"></div>
 
   <div class="scan-screen" id="scanScreen">
@@ -545,18 +677,43 @@
   </audio>
 
   <main class="container">
+    <div class="notif-stack" id="notifStack"></div>
     <div class="topbar">
       <div class="brand"><span class="dot"></span> dossier d’analyse • velasquez_mateo • statut : under evaluation</div>
       <div class="controls">
         <button class="btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Haut</button>
+        <button class="btn" id="notifyBtn">New Alert</button>
         <button class="btn music" id="musicBtn">Musique : OFF</button>
       </div>
     </div>
 
-    <section class="hero">
+    <section class="system-shell">
+      <aside class="sidebar reveal">
+        <div class="sys-title">System modules</div>
+        <div class="sys-list">
+          <div class="sys-item active" data-jump="#overview">Overview</div>
+          <div class="sys-item" data-jump="#mapSection">Geo Tracking</div>
+          <div class="sys-item" data-jump="#statsSection">Behavior Stats</div>
+          <div class="sys-item" data-jump="#timelineSection">Timeline</div>
+          <div class="sys-item" data-jump="#conflictSection">Duality Monitor</div>
+          <div class="sys-item" data-jump="#objectiveSection">Objectives</div>
+        </div>
+      </aside>
+
+      <div class="dashboard" id="overview">
+        <div class="console reveal">
+          <div class="console-head"><span>System Console</span><span>live feed</span></div>
+          <div class="console-lines" id="consoleLines">[BOOT] dossier interface loaded...
+[SYNC] user profile linked...
+[SCAN] emotional pattern stable...
+[CHECK] route conflict detected: street / justice
+[READY] system waiting for input...</div>
+        </div>
+
+        <section class="hero">
       <article class="card reveal">
         <div class="tag">Future Police Candidate</div>
-        <h1 class="name">MATEO <span class="accent"> VELÁSQUEZ</h1>
+        <h1 class="name">MATEO <span class="accent">“AZUL”</span> VELÁSQUEZ</h1>
         <p class="subtitle">
           Latino né à Los Santos. Pas façonné pour faire le malin, mais pour tenir droit quand tout autour penche.
           Mateo a grandi au milieu des raccourcis, des tensions et des mauvais exemples. Au lieu de copier la rue,
@@ -564,8 +721,8 @@
           lucide, impossible à acheter, capable de comprendre ceux qu’il doit affronter.
         </p>
         <div class="quick-grid">
-          <div class="mini-card"><div class="label">Âge</div><div class="value">22 ans</div></div>
-          <div class="mini-card"><div class="label">Origine</div><div class="value">Bolivien</div></div>
+          <div class="mini-card"><div class="label">Âge</div><div class="value">19 ans</div></div>
+          <div class="mini-card"><div class="label">Origine</div><div class="value">Latino</div></div>
           <div class="mini-card"><div class="label">Voie choisie</div><div class="value">Police / ordre / mérite</div></div>
           <div class="mini-card"><div class="label">Réputation</div><div class="value">Froid, propre, observateur</div></div>
         </div>
@@ -609,8 +766,10 @@
         </div>
       </article>
     </section>
+      </div>
+    </section>
 
-    <section class="layout">
+    <section class="layout" id="mapSection">
       <article class="card reveal">
         <h2 class="section-title">Carte interactive • Los Santos</h2>
         <div class="map-box">
@@ -636,7 +795,7 @@
       </article>
     </section>
 
-    <section class="layout">
+    <section class="layout" id="timelineSection">
       <article class="card reveal">
         <h2 class="section-title">Timeline animée</h2>
         <div class="timeline">
@@ -647,7 +806,7 @@
         </div>
       </article>
 
-      <article class="card reveal">
+      <article class="card reveal" id="conflictSection">
         <h2 class="section-title">Conflit intérieur</h2>
         <div class="dual">
           <div class="dual-box">
@@ -665,7 +824,7 @@
       </article>
     </section>
 
-    <section class="card reveal">
+    <section class="card reveal" id="objectiveSection">
       <h2 class="section-title">Objectifs</h2>
       <div class="objective-grid">
         <div class="objective-card">
@@ -673,7 +832,7 @@
           <ul>
             <li>Renforcer encore son image sérieuse</li>
             <li>Continuer à travailler son physique</li>
-            <li>Rejoindre la police de Los Santos</li>
+            <li>Rester irréprochable publiquement</li>
           </ul>
         </div>
         <div class="objective-card">
@@ -687,6 +846,7 @@
         <div class="objective-card">
           <div class="badge">Long terme</div>
           <ul>
+            <li>Rejoindre la police de Los Santos</li>
             <li>Devenir un officier respecté et lucide</li>
             <li>Faire mentir tous ceux qui l’attendaient dans l’échec</li>
           </ul>
@@ -715,7 +875,7 @@
       'BOOTING LSPD PROFILE SYSTEM...',
       'LOADING RECORD: VELASQUEZ_MATEO',
       'STATUS: UNDER EVALUATION',
-      'ORIGIN: LOS SANTOS / Bolivien',
+      'ORIGIN: LOS SANTOS / LATINO',
       'PRIMARY OBJECTIVE: LAW ENFORCEMENT',
       'THREAT OF DEVIATION: LOW',
       'DISCIPLINE INDEX: HIGH',
@@ -793,6 +953,11 @@
     statsObserver.observe(statsSection);
 
     const music = document.getElementById('bgMusic');
+    const notifStack = document.getElementById('notifStack');
+    const notifyBtn = document.getElementById('notifyBtn');
+    const consoleLines = document.getElementById('consoleLines');
+
+    function pushNoti
     const musicBtn = document.getElementById('musicBtn');
     let musicOn = false;
     music.volume = 0.35;
